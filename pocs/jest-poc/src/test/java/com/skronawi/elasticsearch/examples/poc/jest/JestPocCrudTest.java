@@ -22,7 +22,7 @@ https://github.com/searchbox-io/Jest/tree/master/jest
  */
 public class JestPocCrudTest {
 
-    public static final String JEST_POC_INDEX = "jest_poc_index";
+    public static final String JEST_POC_CRUD_INDEX = "jest_poc_crud_index";
     public static final String SIMPLE_ITEM_TYPE = "simple_item";
 
     private JestClient client;
@@ -54,14 +54,14 @@ public class JestPocCrudTest {
             return;
         }
         JestResult indicesExistResult = client.execute(
-                new IndicesExists.Builder(JEST_POC_INDEX).build()
+                new IndicesExists.Builder(JEST_POC_CRUD_INDEX).build()
         );
         if (indicesExistResult.isSucceeded()) {
             JestResult deleteIndexResult = client.execute(
-                    new DeleteIndex.Builder(JEST_POC_INDEX).build()
+                    new DeleteIndex.Builder(JEST_POC_CRUD_INDEX).build()
             );
             if (!deleteIndexResult.isSucceeded()) {
-                System.out.println("index " + JEST_POC_INDEX + " is not deleted");
+                System.out.println("index " + JEST_POC_CRUD_INDEX + " is not deleted");
             }
         }
     }
@@ -73,7 +73,7 @@ public class JestPocCrudTest {
 
         DocumentResult indexResult = client.execute(
                 new Index.Builder(dummy)
-                        .index(JEST_POC_INDEX)
+                        .index(JEST_POC_CRUD_INDEX)
                         .type(SIMPLE_ITEM_TYPE)
                         .build()
         );
@@ -81,11 +81,11 @@ public class JestPocCrudTest {
         Assert.assertNotNull(indexResult);
         Assert.assertEquals(indexResult.getResponseCode(), 201); //CREATED
         Assert.assertEquals(indexResult.getType(), SIMPLE_ITEM_TYPE);
-        Assert.assertEquals(indexResult.getIndex(), JEST_POC_INDEX);
+        Assert.assertEquals(indexResult.getIndex(), JEST_POC_CRUD_INDEX);
         Assert.assertNotNull(indexResult.getId());
 
         DocumentResult getResult = client.execute(
-                new Get.Builder(JEST_POC_INDEX, indexResult.getId())
+                new Get.Builder(JEST_POC_CRUD_INDEX, indexResult.getId())
                         .type(SIMPLE_ITEM_TYPE)
                         .build()
         );
