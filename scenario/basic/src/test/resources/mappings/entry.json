@@ -1,0 +1,33 @@
+{
+  "entry": {
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "isbn": {
+        "type": "string"
+      },
+      "releaseDate": {
+        "type": "date"
+      },
+      "numberOfPages": {
+        "type": "integer"
+      },
+      "content": {
+        "type": "attachment",
+        "fields": {
+          "content": {
+            "term_vector": "with_positions_offsets",
+            "store": "yes"
+          },
+          "content_type": {
+            "store": "yes"
+          },
+          "language": {
+            "store": "yes"
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,8 +5,15 @@ as environment basically.
 
 # Requirements
 
-* a running Elasticsearch 2 instance, e.g. in a Vagrant box ala `https://github.com/sikron/vagrant-elasticsearch-simple`
+* A running Elasticsearch 2 instance, e.g. in a Vagrant box ala `https://github.com/sikron/vagrant-elasticsearch-simple`
 
 # Parameters
 
-* host and port in the tests should be adapted
+* Host and port in the tests should be adapted
+
+# Modules
+
+* `pocs`
+  Basic index-creation, uploading data and searching over REST and with Transport client via TestNG tests.
+* `scenario`
+  A little scenario with more encapsulated implementation. Also driven by TestNg.
