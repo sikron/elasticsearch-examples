@@ -1,9 +1,13 @@
-package com.skronawi.elasticsearch.examples.scenario.basic;
+package com.skronawi.elasticsearch.examples.scenario.basic.util;
+
+import com.skronawi.elasticsearch.examples.scenario.basic.Entry;
+import com.skronawi.elasticsearch.examples.scenario.basic.FileHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
 
 public class Entries {
 
@@ -43,6 +47,16 @@ public class Entries {
         entry.setIsbn("3409");
         entry.setNumberOfPages(3);
         entry.setTitle("muster-vertrag.pdf");
+        entry.setReleaseDate(Date.from(LocalDate.now().minusWeeks(2).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        return entry;
+    }
+
+    public static Entry dynamicContent(String content){
+        Entry entry = new Entry();
+        entry.setContent(Contents.asBase64(content));
+        entry.setIsbn("9270");
+        entry.setNumberOfPages(1);
+        entry.setTitle("dynamic" + UUID.randomUUID().toString());
         entry.setReleaseDate(Date.from(LocalDate.now().minusWeeks(2).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         return entry;
     }

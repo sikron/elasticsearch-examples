@@ -5,6 +5,7 @@ import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.JestResult;
 import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Delete;
+import io.searchbox.core.DeleteByQuery;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 
@@ -36,5 +37,9 @@ public class Index {
 
     public JestResult delete(String id, String indexName, String mappingName) throws IOException {
         return client.execute(new Delete.Builder(id).index(indexName).type(mappingName).build());
+    }
+
+    public JestResult deleteByQuery(String query, String indexName, String mappingName) throws IOException {
+        return client.execute(new DeleteByQuery.Builder(query).addIndex(indexName).addType(mappingName).build());
     }
 }

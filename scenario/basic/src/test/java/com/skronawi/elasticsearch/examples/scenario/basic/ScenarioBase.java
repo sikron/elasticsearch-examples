@@ -3,7 +3,7 @@ package com.skronawi.elasticsearch.examples.scenario.basic;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
-public abstract class BasicScenarioBase {
+public abstract class ScenarioBase {
 
     protected static final String URL = "http://localhost:9200";
     protected static final String INDEX_NAME = "scenario";

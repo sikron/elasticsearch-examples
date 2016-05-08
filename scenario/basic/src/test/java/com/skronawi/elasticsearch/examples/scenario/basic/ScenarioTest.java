@@ -1,5 +1,7 @@
 package com.skronawi.elasticsearch.examples.scenario.basic;
 
+import com.skronawi.elasticsearch.examples.scenario.basic.util.Entries;
+import com.skronawi.elasticsearch.examples.scenario.basic.util.Mappings;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.SearchResult;
@@ -8,7 +10,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class BasicScenarioTest extends BasicScenarioBase {
+public class ScenarioTest extends ScenarioBase {
 
     @Test
     public void test() throws Exception {
@@ -25,21 +27,13 @@ public class BasicScenarioTest extends BasicScenarioBase {
         Assert.assertTrue(getResult.isSucceeded());
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-                .query(QueryBuilders.matchQuery("content.content", "bookmark")); //as "Bookmarks" is contained
+                .query(QueryBuilders.matchQuery("content.content", "bookmark"));
         SearchResult searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
         Assert.assertEquals(searchResult.getTotal().intValue(), 1);
 
         searchSourceBuilder = new SearchSourceBuilder()
-                .query(QueryBuilders.matchQuery("content.content", "mookbark")); //as "Bookmarks" is contained
+                .query(QueryBuilders.matchQuery("content.content", "mookbark"));
         searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
         Assert.assertEquals(searchResult.getTotal().intValue(), 0);
     }
-
-    /*
-    - search by part: "mark"
-    - search by plural of contained singular: "workflows"
-    - search combined: "bookmark" & isbn -> pos & neg
-    - search should NOT return the content, only metadata or specified fields
-    - search for german full-text
-    */
 }

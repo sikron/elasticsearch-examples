@@ -63,4 +63,29 @@ public class Entry {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(entry, Entry.class);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Entry entry = (Entry) o;
+
+        if (numberOfPages != entry.numberOfPages) return false;
+        if (title != null ? !title.equals(entry.title) : entry.title != null) return false;
+        if (isbn != null ? !isbn.equals(entry.isbn) : entry.isbn != null) return false;
+        if (releaseDate != null ? !releaseDate.equals(entry.releaseDate) : entry.releaseDate != null) return false;
+        return content != null ? content.equals(entry.content) : entry.content == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
+        result = 31 * result + numberOfPages;
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        return result;
+    }
 }

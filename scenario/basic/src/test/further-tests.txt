@@ -1,0 +1,8 @@
+- use different analyzers, which also support stemming, maybe synonyms
+- fuzzy search
+- did-you-mean search
+- a mapping, where 1 content is analyzed into different languages
+v- try different queries and look into their effect/results
+v- try out filters instead of queries
+v- delete-by-query (plugin needed!)
+- update-by-query (plugin needed!)
