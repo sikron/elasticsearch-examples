@@ -10,7 +10,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ScenarioTest extends ScenarioBase {
+public class CreateGetSearchTest extends ScenarioBase {
 
     @Test
     public void test() throws Exception {

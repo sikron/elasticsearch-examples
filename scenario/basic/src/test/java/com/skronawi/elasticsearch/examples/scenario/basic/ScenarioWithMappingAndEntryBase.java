@@ -7,7 +7,7 @@ import io.searchbox.core.DocumentResult;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 
-public abstract class ScenarioWithEntryMappingBase extends ScenarioBase {
+public abstract class ScenarioWithMappingAndEntryBase extends ScenarioBase {
 
     @BeforeClass
     public void indexAnEntry() throws Exception {

@@ -1,8 +1,6 @@
-- use different analyzers, which also support stemming, maybe synonyms
+- use different analyzers, which also support stemming, maybe synonyms, stopwords, etc.
 - fuzzy search
 - did-you-mean search
-- a mapping, where 1 content is analyzed into different languages
-v- try different queries and look into their effect/results
-v- try out filters instead of queries
-v- delete-by-query (plugin needed!)
+- a mapping, where 1 content is analyzed into different languages (with sub-fields)
 - update-by-query (plugin needed!)
+- better use Entries.dynamicContent() to see what can be found and why. use it in test-constructor to immediatly see the content

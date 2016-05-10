@@ -6,7 +6,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SearchTest extends ScenarioWithEntryMappingBase {
+public class EffectsOfMatchSearchTest extends ScenarioWithMappingAndEntryBase {
 
     @Test
     public void searchEquals() throws Exception {

@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 FilterBuilder etc. is deprecated in ES 2.0. Instead use a bool query with must clause, see
 https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-filtered-query.html#_filtering_without_a_query
  */
-public class FiltersTest extends ScenarioWithEntryMappingBase {
+public class FiltersTest extends ScenarioWithMappingAndEntryBase {
 
     @Test
     public void filterByQueryString() throws Exception {

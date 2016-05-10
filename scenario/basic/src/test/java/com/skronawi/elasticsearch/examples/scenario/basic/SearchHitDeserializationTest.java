@@ -7,7 +7,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SearchHitDeserializationTest extends ScenarioWithEntryMappingBase {
+public class SearchHitDeserializationTest extends ScenarioWithMappingAndEntryBase {
 
     @Test
     public void testHit() throws Exception{

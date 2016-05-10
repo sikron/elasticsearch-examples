@@ -10,7 +10,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DeleteByQueryTest extends ScenarioWithEntryMappingBase {
+public class DeleteByQueryTest extends ScenarioWithMappingAndEntryBase {
 
     @Test
     public void test() throws Exception {

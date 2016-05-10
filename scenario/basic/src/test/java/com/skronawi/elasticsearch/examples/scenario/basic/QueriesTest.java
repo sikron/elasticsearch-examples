@@ -2,12 +2,16 @@ package com.skronawi.elasticsearch.examples.scenario.basic;
 
 import com.skronawi.elasticsearch.examples.scenario.basic.util.Entries;
 import io.searchbox.core.SearchResult;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class QueriesTest extends ScenarioWithEntryMappingBase {
+import java.time.LocalDate;
+import java.util.Date;
+
+public class QueriesTest extends ScenarioWithMappingAndEntryBase {
 
     @Test
     public void searchByQueryString() throws Exception {
@@ -80,5 +84,74 @@ public class QueriesTest extends ScenarioWithEntryMappingBase {
                 .query(QueryBuilders.matchQuery("title", Entries.test().getTitle().toUpperCase()));
         searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
         Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+    }
+
+    @Test
+    public void searchByMultiMatch() throws Exception{
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.multiMatchQuery(Entries.test().getTitle(), "title",
+                        "content.content", "isbn"));
+        SearchResult searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+    }
+
+    @Test
+    public void searchByPrefix() throws Exception{
+
+        String title = Entries.test().getTitle();
+        String prefix = title.substring(0, title.lastIndexOf("."));
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.prefixQuery("title", prefix));
+        SearchResult searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+    }
+
+    @Test
+    public void searchByPrefixPhraseAndInContent() throws Exception{
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.matchPhrasePrefixQuery("content.content", "The pdf995 su"));
+        SearchResult searchResult = this.search.search(searchSourceBuilder.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+    }
+
+    @Test
+    public void searchWithBoolQuery() throws Exception{
+
+        Entry entry = Entries.test();
+
+        MatchQueryBuilder titleQuery = QueryBuilders.matchQuery("title", entry.getTitle().toUpperCase());
+
+        Date fromDate = new DateTime(entry.getReleaseDate()).minusDays(1).toDate();
+        Date toDate = new DateTime(entry.getReleaseDate()).plusDays(1).toDate();
+        RangeQueryBuilder releaseDateQuery = QueryBuilders.rangeQuery("releaseDate").from(fromDate).to(toDate);
+
+        TermQueryBuilder contentQuery = QueryBuilders.termQuery("content.content", "links");
+        TermQueryBuilder notExistingContentQuery = QueryBuilders.termQuery("content.content", "foobar-links");
+
+        //now play around
+
+        SearchSourceBuilder titleReleaseDateQuery = new SearchSourceBuilder().query(
+                QueryBuilders.boolQuery().must(titleQuery).must(releaseDateQuery));
+        SearchResult searchResult = this.search.search(titleReleaseDateQuery.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+
+        SearchSourceBuilder titleNotReleaseDateQuery = new SearchSourceBuilder().query(
+                QueryBuilders.boolQuery().must(titleQuery).mustNot(releaseDateQuery));
+        searchResult = this.search.search(titleNotReleaseDateQuery.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 0);
+
+        SearchSourceBuilder titleShouldContentQuery = new SearchSourceBuilder().query(
+                QueryBuilders.boolQuery().must(titleQuery).should(contentQuery).should(notExistingContentQuery));
+        searchResult = this.search.search(titleShouldContentQuery.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
+
+        SearchSourceBuilder titleShouldContentBothQuery = new SearchSourceBuilder().query(
+                QueryBuilders.boolQuery().must(titleQuery).should(contentQuery).should(notExistingContentQuery)
+                        .minimumNumberShouldMatch(2));
+        searchResult = this.search.search(titleShouldContentBothQuery.toString(), INDEX_NAME);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 0);
     }
 }
