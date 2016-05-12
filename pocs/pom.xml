@@ -17,6 +17,7 @@
         <module>transport-poc</module>
         <module>jest-poc</module>
         <module>common</module>
+        <module>tika</module>
     </modules>
 
 </project>

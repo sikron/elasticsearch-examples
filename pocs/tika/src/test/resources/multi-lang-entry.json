@@ -1,0 +1,17 @@
+{
+  "multi-lang-entry": {
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "text_en": {
+        "type": "string",
+        "analyzer": "english"
+      },
+      "text_de": {
+        "type": "string",
+        "analyzer": "german"
+      }
+    }
+  }
+}
