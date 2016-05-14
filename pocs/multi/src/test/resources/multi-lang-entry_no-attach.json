@@ -1,0 +1,28 @@
+{
+  "multi-lang-entry": {
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "file": {
+        "type": "string",
+        "copy_to": [
+          "fulltext_en",
+          "fulltext_de"
+        ],
+        "store": "no",
+        "index": "no"
+      },
+      "fulltext_en": {
+        "type": "string",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "english"
+      },
+      "fulltext_de": {
+        "type": "string",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "german"
+      }
+    }
+  }
+}

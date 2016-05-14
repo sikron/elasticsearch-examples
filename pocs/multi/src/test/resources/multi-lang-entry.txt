@@ -1,0 +1,5 @@
+- attachment plugin to extract text, detect language and content_type
+- but do not store the extracted text
+- copy the text to the multi-field
+- the multi-field then distributes the text to its language-specific fields and lets each analyzer perform
+- search must then be like "match fulltext.en or match fulltext.de or match fulltext.raw"

@@ -18,6 +18,7 @@
         <module>jest-poc</module>
         <module>common</module>
         <module>tika</module>
+        <module>multi</module>
     </modules>
 
 </project>

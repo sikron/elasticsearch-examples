@@ -1,0 +1,49 @@
+{
+  "multi-lang-entry": {
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "file": {
+        "type": "attachment",
+        "fields": {
+          "content": {
+            "type": "string",
+            "copy_to": [
+              "fulltext.raw",
+              "fulltext.en",
+              "fulltext.de"
+            ],
+            "store": "no",
+            "index": "no"
+          },
+          "content_type": {
+            "store": "yes"
+          },
+          "language": {
+            "store": "yes"
+          }
+        }
+      },
+      "fulltext": {
+        "type": "string",
+        "fields": {
+          "raw": {
+            "type": "string",
+            "term_vector": "with_positions_offsets"
+          },
+          "en": {
+            "type": "string",
+            "term_vector": "with_positions_offsets",
+            "analyzer": "english"
+          },
+          "de": {
+            "type": "string",
+            "term_vector": "with_positions_offsets",
+            "analyzer": "german"
+          }
+        }
+      }
+    }
+  }
+}
