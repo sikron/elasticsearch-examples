@@ -35,10 +35,6 @@ that you're indexing or analyzing the field.
 ------------------------------------------------------------------------------------------------------------------------
 
 http://stackoverflow.com/questions/17103047/why-do-i-need-storeyes-in-elasticsearch?rq=1
-
-------------------------------------------------------------------------------------------------------------------------
-
-https://github.com/elastic/elasticsearch/issues/18361
  */
 public class StoreIndexTest {
 

@@ -140,7 +140,9 @@ public class MultiLangCopyToScenario {
     }
 
     //FIXME currently failing as the 'copy_to' within the attachment field is not working
-    //see  https://github.com/elastic/elasticsearch/issues/14946
+    //see  https://github.com/elastic/elasticsearch/issues/14946 <- closed
+    //clarified here:  https://github.com/elastic/elasticsearch/issues/18361
+    //does not work with attachment plugin
     @Test
     public void testAttachment() throws Exception {
 
