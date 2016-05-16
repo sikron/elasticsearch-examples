@@ -1,0 +1,36 @@
+{
+  "stored-indexed-entry": {
+    "properties": {
+      "no-store-file": {
+        "type": "attachment",
+        "fields": {
+          "content": {
+            "type": "string",
+            "store": "no",
+            "index": "analyzed"
+          }
+        }
+      },
+      "not_stored-not_indexed-string": {
+        "type": "string",
+        "store": "no",
+        "index": "no"
+      },
+      "not_stored-indexed-string": {
+        "type": "string",
+        "store": "no",
+        "index": "analyzed"
+      },
+      "stored-not_indexed-string": {
+        "type": "string",
+        "store": "yes",
+        "index": "no"
+      },
+      "stored-indexed-string": {
+        "type": "string",
+        "store": "yes",
+        "index": "analyzed"
+      }
+    }
+  }
+}
