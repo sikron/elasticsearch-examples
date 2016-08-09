@@ -1,0 +1,9 @@
+{
+  "entry": {
+    "properties": {
+      "name": {
+        "type": "boolean"
+      }
+    }
+  }
+}

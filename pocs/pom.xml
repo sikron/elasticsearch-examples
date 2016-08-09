@@ -20,6 +20,7 @@
         <module>tika</module>
         <module>multi</module>
         <module>storeindex</module>
+        <module>mappingindexindependent</module>
     </modules>
 
 </project>
