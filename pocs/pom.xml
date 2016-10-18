@@ -21,6 +21,7 @@
         <module>multi</module>
         <module>storeindex</module>
         <module>mappingindexindependent</module>
+        <module>ngram</module>
     </modules>
 
 </project>
