@@ -24,12 +24,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /*
-Here a ngram filter is used. According to this issue here, this does not work:
-https://github.com/elastic/elasticsearch/issues/21000
+Here a ngram tokenizer is used, which matches for all 3-ngrams of the search-term.
+So only documents are returned, which have all the 3-ngrams of the search-term.
 
-A ngram tokenizer works, see the other test class.
+see https://www.elastic.co/guide/en/elasticsearch/reference/2.4/analysis-ngram-tokenizer.html
  */
-public class NgramMinShouldMatchScenario {
+public class NgramTokenizerMinShouldMatchScenario {
 
     public static final String INDEX = "ngram_poc_index";
     public static final String TYPE = "ngram-entry";
@@ -76,8 +76,9 @@ public class NgramMinShouldMatchScenario {
     @Test
     public void test() throws Exception {
 
+        //use the ngram-tokenizer!!!!
         String indexSettingsJson = new String(IOUtils.toByteArray(
-                getClass().getResourceAsStream("/index-settings.json")));
+                getClass().getResourceAsStream("/index-settings_ngram-tokenizer.json")));
 
         //create the index
         JestResult createIndexResult = client.execute(new CreateIndex.Builder(INDEX)
@@ -121,27 +122,35 @@ public class NgramMinShouldMatchScenario {
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.isSucceeded());
 
-        //https://www.elastic.co/guide/en/elasticsearch/guide/current/ngrams-compound-words.html
         /*
-        A similar query for “Gesundheit” (health) correctly matches “Welt-gesundheit-sorganisation,” but it also
-        matches “Militär-ges-chichte” and “Rindfleischetikettierungsüberwachungsaufgabenübertragungs-ges-etz,” both
-        of which also contain the trigram "ges".
+        here "ges" from "Gesundheit" will not result in "Militärgeschichte" being in the result set.
+        only the documents, which have all the 3-ngrams of "gesundheit" will match
+        -> only the one with "Weltgesundheitsorganisation"
+        the "minimum_should_match" has actually no effect here
          */
+
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+//                .query(QueryBuilders.matchQuery("fulltext", "Gesundheit"));
+//        SearchResult searchResult = client.execute(
+//                new Search.Builder(searchSourceBuilder.toString())
+//                        .addIndex(INDEX)
+//                        .build());
+//        Assert.assertNotNull(searchResult);
+//        Assert.assertEquals(searchResult.getTotal().intValue(), 2);
+
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-                .query(QueryBuilders.matchQuery("fulltext", "Gesundheit"));
+                .query(QueryBuilders.matchQuery("fulltext", "Gesundheit")
+                        .minimumShouldMatch("1%"));
         SearchResult searchResult = client.execute(
                 new Search.Builder(searchSourceBuilder.toString())
                         .addIndex(INDEX)
                         .build());
         Assert.assertNotNull(searchResult);
-        Assert.assertEquals(searchResult.getTotal().intValue(), 2);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
 
-        //https://www.elastic.co/guide/en/elasticsearch/reference/2.3/query-dsl-minimum-should-match.html
-        //FIXME "minimum_should_match" not obeyed here -> bug?
         searchSourceBuilder = new SearchSourceBuilder()
                 .query(QueryBuilders.matchQuery("fulltext", "Gesundheit")
-                        .minimumShouldMatch("80%"))
-        ;
+                        .minimumShouldMatch("80%"));
         searchResult = client.execute(
                 new Search.Builder(searchSourceBuilder.toString())
                         .addIndex(INDEX)
@@ -149,19 +158,31 @@ public class NgramMinShouldMatchScenario {
         Assert.assertNotNull(searchResult);
         Assert.assertEquals(searchResult.getTotal().intValue(), 1);
 
-        /*
-        query in elasticsearch syntax, e.g. for use in head-plugin
+        searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.matchQuery("fulltext", "undhei"));
+        searchResult = client.execute(
+                new Search.Builder(searchSourceBuilder.toString())
+                        .addIndex(INDEX)
+                        .build());
+        Assert.assertNotNull(searchResult);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 1);
 
-        {
-            "query": {
-                "match": {
-                    "fulltext": {
-                        "query":                "Gesundheit",
-                        "minimum_should_match": "80%"
-                    }
-                }
-            }
-        }
-         */
+        searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.matchQuery("fulltext", "ges"));
+        searchResult = client.execute(
+                new Search.Builder(searchSourceBuilder.toString())
+                        .addIndex(INDEX)
+                        .build());
+        Assert.assertNotNull(searchResult);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 2);
+
+        searchSourceBuilder = new SearchSourceBuilder()
+                .query(QueryBuilders.matchQuery("fulltext", "ge"));
+        searchResult = client.execute(
+                new Search.Builder(searchSourceBuilder.toString())
+                        .addIndex(INDEX)
+                        .build());
+        Assert.assertNotNull(searchResult);
+        Assert.assertEquals(searchResult.getTotal().intValue(), 0);
     }
 }
